@@ -1,0 +1,42 @@
+version: '3'
+services:
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: php-fpm.dockerfile
+    image: web-music-php-image
+    container_name: web-music-php-container
+    restart: always
+    volumes:
+      - .:/var/www/app
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=web_music
+      - DB_USERNAME=root
+      - DB_PASSWORD=123456
+  nginx:
+    build:
+      context: .nginx
+      dockerfile: nginx.dockerfile
+    container_name: web_music_nginx_container
+    image: web_music_nginx_image
+    restart: always
+    volumes:
+      - .:/var/www/app
+    ports:
+      - 8080:80
+  mysql:
+    build:
+      context: .mysql
+      dockerfile: mysql.dockerfile
+    container_name: web_music_mysql_container
+    image: web_music_mysql_image
+    restart: always
+    ports:
+      - 31060:3306
+    volumes:
+      - ${DATA_PATH_HOST}/web_music/mysqysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
