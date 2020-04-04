@@ -18,3 +18,10 @@ cp .env.example .env
 
 ## Run localhost tại cổng 8080
 http://localhost:8080
+
+
+##run testing
+```
+docker-compose exec php-fpm ./vendor/bin/phpunit
+```
+
